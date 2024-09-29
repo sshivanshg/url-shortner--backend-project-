@@ -1,8 +1,34 @@
-const mongoose = require('mongoose');
- async function connectToMongoDB(url){
-    return mongoose.connect(url);
+// const mongoose = require('mongoose');
+//  async function connectToMongoDB(url){
+//     return mongoose.connect(url);
 
- }
+//  }
+// module.exports = connectToMongoDB;
+
+
+const { MongoClient } = require('mongodb');
+
+async function connectToMongoDB(mongoURI) {
+  const client = new MongoClient(mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverApi: {
+      version: '1', 
+      strict: true, 
+      deprecationErrors: true
+    }
+  });
+
+  try {
+    await client.connect();
+    await client.db("admin").command({ ping: 1 });
+    console.log("Successfully connected to MongoDB Atlas!");
+  } catch (error) {
+    console.error("Failed to connect to MongoDB Atlas", error);
+    throw error;  // rethrow to handle in main app.js
+  }
+}
+
 module.exports = connectToMongoDB;
 
 // const mongoose = require('mongoose');
