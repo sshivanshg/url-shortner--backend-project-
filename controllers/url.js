@@ -41,6 +41,19 @@ async function handleGenerateNewShortUrl(req, res) {
         console.error("Error creating short URL:", error);
         return res.status(500).json({ error: 'Internal server error' });
     }
+
+
+}
+async function handleGetAnalytics(req, res) {
+    const shortId = req.params.shortId;
+    
+    const result = await URL.findOne({ shortId });
+
+    return res.json({
+        totalClicks: result.visitHistory.length,
+        analytics: result.visitHistory,
+    });
 }
 
 module.exports = handleGenerateNewShortUrl;
+
