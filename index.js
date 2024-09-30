@@ -17,6 +17,10 @@ app.use(express.json());
 
 app.use("/url", urlRoute);
 
+app.get('/', (req,res)=>{
+  res.send("Server is running");
+});
+
 app.get('/:shortId',async (req, res) => {
     const shortId = req.params.shortId;
     const entry = await URL.findOneAndUpdate({
